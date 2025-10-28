@@ -1,24 +1,43 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import HomeComp from './components/pages/homeComp';
-import ListComp from './components/pages/listComp';
-import ErrorComp from './components/pages/ErrorComp';
-import MenuComp from './components/layout/MenuComp';
-import ViewComp from './components/pages/ViewComp';
+import { BrowserRouter, Link, NavLink, Route, Routes } from 'react-router-dom';
+import './App.css';
+import HomeComp from './pages/home/HomeComp';
+import AboutComp from './pages/about/AboutComp';
+import BoardComp from './pages/board/BoardComp';
 
 function App() {
   return (
     <BrowserRouter>
-      <MenuComp>
-        <div className="contianer">
-          <Routes>
-            <Route path="/" element={<HomeComp />} />
-            <Route path="/" element={<ListComp />} />
-            <Route path="/" element={<ViewComp />} />
-            <Route path="/*" element={<ErrorComp />} />
-          </Routes>
-        </div>
-      </MenuComp>
+      <div className="container d-flex justify-content-between">
+        <h1>
+          <Link to="/" className="nav-link">
+            LOGO
+          </Link>
+        </h1>
+        <ul className="d-flex gap-3 menu">
+          <li className="d-flex align-items-center">
+            <NavLink to="/" className="nav-link">
+              home
+            </NavLink>
+          </li>
+          <li className="d-flex align-items-center">
+            <NavLink to="/about" className="nav-link">
+              about
+            </NavLink>
+          </li>
+          <li className="d-flex align-items-center">
+            <NavLink to="/board" className="nav-link">
+              board
+            </NavLink>
+          </li>
+        </ul>
+      </div>
+      <Routes>
+        <Route path="./" element={<HomeComp />}></Route>
+        <Route path="./about/*" element={<AboutComp />}></Route>
+        <Route path="./board/*" element={<BoardComp />}></Route>
+      </Routes>
+      <div className="container">footer</div>
     </BrowserRouter>
   );
 }

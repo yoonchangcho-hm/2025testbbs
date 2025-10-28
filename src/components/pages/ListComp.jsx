@@ -1,6 +1,24 @@
 import React from 'react';
 
+import React, { useEffect, useState } from 'react';
+import supabase from '';
+
+import dayjs from 'dayjs';
+
 function ListComp() {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    async function getPosts() {
+      const { data: posts } = await supabase.from('posts').select();
+
+      console.log(posts);
+      setPosts(posts);
+    }
+
+    getPosts();
+  }, []);
+
   return (
     <div>
       <h3>post</h3>
