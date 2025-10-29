@@ -8,6 +8,7 @@ import BoardComp from './pages/board/BoardComp';
 function App() {
   return (
     <BrowserRouter>
+      {/* 상단 네비게이션 */}
       <div className="container d-flex justify-content-between">
         <h1>
           <Link to="/" className="nav-link">
@@ -32,11 +33,15 @@ function App() {
           </li>
         </ul>
       </div>
+
+      {/* 라우트 영역 */}
       <Routes>
-        <Route path="./" element={<HomeComp />}></Route>
-        <Route path="./about/*" element={<AboutComp />}></Route>
-        <Route path="./board/*" element={<BoardComp />}></Route>
+        <Route path="/" element={<HomeComp />} />
+        <Route path="/about/*" element={<AboutComp />} />
+        <Route path="/board/*" element={<BoardComp />} />
       </Routes>
+
+      {/* 푸터 */}
       <div className="container">footer</div>
     </BrowserRouter>
   );
