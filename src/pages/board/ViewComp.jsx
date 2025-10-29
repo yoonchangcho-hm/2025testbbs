@@ -20,8 +20,8 @@ function ViewComp() {
 
         if (error) throw error;
         setPost(data);
-      } catch (err) {
-        console.error('데이터 불러오기 실패:', err.message);
+      } catch (error) {
+        console.error('데이터 불러오기 실패:', error.message);
         setErrorMsg('글 불러오기 실패.');
       } finally {
         setLoading(false);
