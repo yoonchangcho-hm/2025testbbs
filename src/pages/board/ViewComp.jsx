@@ -1,47 +1,75 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import supabase from '../../utils/supabase';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+
+dayjs.locale('ko');
 
 function ViewComp() {
-  const { id } = useParams(); // URL 파라미터 (글 번호)
-  const [post, setPost] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [view, setView] = useState({});
 
   useEffect(() => {
-    const fetchPost = async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from('posts')
-          .select('*')
-          .eq('id', Number(id))
-          .single();
+    const viewData = async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .eq('id', Number(id))
+        .single();
 
-        if (error) throw error;
-        setPost(data);
-      } catch (error) {
-        console.error('데이터 불러오기 실패:', error.message);
-        setErrorMsg('글 불러오기 실패.');
-      } finally {
-        setLoading(false);
-      }
+      console.log(data);
+      setView(data);
     };
-    fetchPost();
+    viewData();
   }, [id]);
+
+  const handleDelete = async () => {
+    const confirm = window.confirm('정말 삭제하시겠습니까?');
+    if (!confirm) return;
+
+    const { error } = await supabase
+      .from('posts')
+      .delete()
+      .eq('id', Number(id));
+
+    if (!error) {
+      alert('삭제 완료!');
+      navigate('/board/list');
+    } else {
+      alert('삭제 실패!');
+    }
+  };
 
   return (
     <div>
-      <h3>글보기 / {id}</h3>
-      {loading && <p>로딩 중...</p>}
-      {errorMsg && <p>{errorMsg}</p>}
-      {post && (
-        <div>
-          <h4>{post.title}</h4>
-          <p>{post.body}</p>
-          <small>작성자 ID: {post.userId}</small>
+      <h3>글보기</h3>
+      <hr />
+      <div>
+        <div className="d-flex flex-column flex-md-row justify-content-between">
+          <h4>{view.title}</h4>
+          <div>
+            {view.name} /{' '}
+            {dayjs(view.created_at).format('YY.MM.DD (ddd) HH:mm')}
+          </div>
         </div>
-      )}
+        <hr />
+        <p style={{ minHeight: '200px' }}>{view.content}</p>
+      </div>
+      <div className="d-flex justify-content-end">
+        <div className="d-flex gap-2">
+          <Link to="/board/list" className="btn btn-primary">
+            리스트
+          </Link>
+          <Link to={`/board/modify/${id}`} className="btn btn-info">
+            수정
+          </Link>
+          <button className="btn btn-danger" onClick={handleDelete}>
+            삭제
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

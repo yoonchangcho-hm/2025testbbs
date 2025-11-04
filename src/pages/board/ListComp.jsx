@@ -1,41 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { useState, useEffect } from 'react';
+import dayjs from 'dayjs';
+import { Link } from 'react-router-dom';
 
-// 환경변수에서 Supabase 연결 정보 가져오기
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-function ListComp() {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      // 예: "posts"라는 테이블에서 모든 데이터 가져오기
-      const { data, error } = await supabase.from('posts').select('*');
-      if (error) {
-        console.error('데이터 불러오기 실패:', error);
-      } else {
-        setPosts(data);
-      }
-    };
-    fetchPosts();
-  }, []);
-
+function ListComp({ posts }) {
   if (!posts.length) {
-    return <p>게시글이 없습니다.</p>;
+    return <p>게시물이 없습니다.</p>;
   }
 
   return (
     <div>
-      <h3>글리스트</h3>
-      <ul>
+      <h3>리스트</h3>
+
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col" style={{ width: '30px' }}>
+              no
+            </th>
+            <th scope="col" style={{ width: '60%' }}>
+              subject
+            </th>
+            <th scope="col">name</th>
+            <th scope="col">date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {posts.map((item, i) => {
+            return (
+              <tr key={i}>
+                <th scope="row">{posts.length - i}</th>
+                <td>
+                  <Link to={`/board/view/${item.id}`} className="nav-link">
+                    {item.title}
+                  </Link>
+                </td>
+                <td>{item.name}</td>
+                <td>{dayjs(item.created_at).format('YY.MM.DD')}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
+      {/* 예전 리스트 출력 방식 (참고용) */}
+      {/* <ul>
         {posts.map((item, i) => (
-          <li key={item.id || i}>
-            {i + 1}. {item.title}
+          <li key={i}>
+            {item.title} / {item.name} / {item.content} /
+            {dayjs(item.created_at).format('YYYY-MM-DD')}
           </li>
         ))}
-      </ul>
+      </ul> */}
+
+      <div className="d-flex justify-content-end">
+        <div className="d-flex gap-2">
+          <Link to="/board/write" className="btn btn-primary">
+            글작성
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
