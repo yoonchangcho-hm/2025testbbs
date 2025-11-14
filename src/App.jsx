@@ -4,6 +4,7 @@ import './App.css';
 import HomeComp from './pages/home/HomeComp';
 import AboutComp from './pages/about/AboutComp';
 import BoardComp from './pages/board/BoardComp';
+import MemberComp from './pages/member/MemberComp';
 
 function App() {
   return (
@@ -31,6 +32,11 @@ function App() {
               board
             </NavLink>
           </li>
+          <li className="d-flex align-items-center">
+            <NavLink to="/member" className="nav-link">
+              로그인
+            </NavLink>
+          </li>
         </ul>
       </div>
 
@@ -39,6 +45,7 @@ function App() {
         <Route path="/" element={<HomeComp />} />
         <Route path="/about/*" element={<AboutComp />} />
         <Route path="/board/*" element={<BoardComp />} />
+        <Route path="/member/*" element={<MemberComp />} />
       </Routes>
 
       {/* 푸터 */}

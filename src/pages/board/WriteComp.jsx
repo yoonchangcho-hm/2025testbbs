@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import supabase from '../../utils/supabase';
 import { Link, useNavigate } from 'react-router-dom';
+import { useBoard } from '../../context/BoardContext';
 
-function WriteComp({ getPosts }) {
+function WriteComp() {
+  const { getPosts } = useBoard();
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     title: '',
     name: '',

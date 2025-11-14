@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import supabase from '../../utils/supabase';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
@@ -7,8 +7,9 @@ import 'dayjs/locale/ko';
 dayjs.locale('ko');
 
 function ViewComp() {
+  const params = useParams();
   const { id } = useParams();
-  const navigate = useNavigate();
+  console.log(params);
   const [view, setView] = useState({});
 
   useEffect(() => {
@@ -23,24 +24,7 @@ function ViewComp() {
       setView(data);
     };
     viewData();
-  }, [id]);
-
-  const handleDelete = async () => {
-    const confirm = window.confirm('정말 삭제하시겠습니까?');
-    if (!confirm) return;
-
-    const { error } = await supabase
-      .from('posts')
-      .delete()
-      .eq('id', Number(id));
-
-    if (!error) {
-      alert('삭제 완료!');
-      navigate('/board/list');
-    } else {
-      alert('삭제 실패!');
-    }
-  };
+  }, []);
 
   return (
     <div>
@@ -65,9 +49,9 @@ function ViewComp() {
           <Link to={`/board/modify/${id}`} className="btn btn-info">
             수정
           </Link>
-          <button className="btn btn-danger" onClick={handleDelete}>
+          <Link to="" className="btn btn-danger">
             삭제
-          </button>
+          </Link>
         </div>
       </div>
     </div>
