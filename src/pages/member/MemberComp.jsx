@@ -5,23 +5,20 @@ import SignUpComp from './SignUpComp';
 
 function MemberComp() {
   return (
-    <div className="container">
-      <h3>회원</h3>
-      <div className="d-flex gap-3">
-        <Link to="/member/signin" className="nav-link">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
+      <div className="mb-6 flex gap-4">
+        <Link to="signin" className="text-blue-600 hover:underline">
           로그인
         </Link>
-        <Link to="/member/signup" className="nav-link">
+        <Link to="signup" className="text-blue-600 hover:underline">
           회원가입
         </Link>
       </div>
-      <div>
-        <Routes>
-          <Route index element={<SignInComp />}></Route>
-          <Route path="signin" element={<SignInComp />}></Route>
-          <Route path="signUp" element={<SignUpComp />}></Route>
-        </Routes>
-      </div>
+      <Routes>
+        <Route index element={<SignInComp />} />
+        <Route path="signin" element={<SignInComp />} />
+        <Route path="signup" element={<SignUpComp />} />
+      </Routes>
     </div>
   );
 }
